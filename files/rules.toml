@@ -1,0 +1,39 @@
+# '${env_name}' is the name of the environment
+[${env_name}]
+
+    # '${env_name}.rule' is how you specify an environment-wide rule
+    # This drops all healthchecks across an environment.
+    [[${env_name}.rule]]
+        name = "drop healthchecks"
+        drop = true
+        [[${env_name}.rule.condition]]
+            field = "http.route"
+            operator = "="
+            value = "/x/alive"
+
+    # This keeps all slow 500 errors across an environment.
+    [[${env_name}.rule]]
+        name = "keep slow 500 errors"
+        SampleRate = 1
+        [[${env_name}.rule.condition]]
+            field = "status_code"
+            operator = ">="
+            value = 500
+
+
+    # This dynamically samples all 200 responses across an environment.
+    [[${env_name}.rule]]
+        name = "dynamically sample 200 responses"
+        [[${env_name}.rule.condition]]
+            field = "status_code"
+            operator = "="
+            value = 200
+        [${env_name}.rule.sampler.EMADynamicSampler]
+            Sampler = "EMADynamicSampler"
+            GoalSampleRate = 15
+            FieldList = ["request.method", "request.route"]
+            AddSampleRateKeyToTrace = true
+            AddSampleRateKeyToTraceField = "meta.refinery.dynsampler_key"
+
+    [[${env_name}.rule]]
+        SampleRate = 10 # default when no rules match, if missing defaults to 10
