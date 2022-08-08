@@ -13,7 +13,7 @@
 
     # This keeps all slow 500 errors across an environment.
     [[${env_name}.rule]]
-        name = "keep slow 500 errors"
+        name = "keep 500 errors"
         SampleRate = 1
         [[${env_name}.rule.condition]]
             field = "status_code"
