@@ -8,6 +8,11 @@ variable "vpc_name" {
   type        = string
 }
 
+variable "subnet_name" {
+  description = "Subnet name to use"
+  type        = string
+}
+
 variable "aws_profile_name" {
   description = "The name of the aws profile needed for intended use"
   type        = string

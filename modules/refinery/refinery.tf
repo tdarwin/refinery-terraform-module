@@ -1,9 +1,9 @@
 resource "aws_instance" "refinery_servers" {
 
-  depends_on                  = [module.vpc, aws_instance.redis_server]
+  depends_on                  = [aws_instance.redis_server]
   count                       = length(var.refinery_servers)
   ami                         = data.aws_ami.amazon-linux-2.id
-  subnet_id                   = module.vpc.public_subnets[0]
+  subnet_id                   = data.aws_subnet.refinery-subnet.id
   instance_type               = var.refinery_instance_type
   vpc_security_group_ids      = [aws_security_group.refinery_sg.id]
   associate_public_ip_address = true
@@ -24,9 +24,10 @@ resource "aws_instance" "refinery_servers" {
   provisioner "file" {
     content = templatefile("${path.module}/files/refinery.toml", {
       redis_instance = aws_instance.redis_server.private_dns
+      redis_port     = "6379"
       redis_username = var.redis_username
       redis_password = var.redis_password
-      hny_api_key = var.honeycomb_api_key
+      hny_api_key    = var.honeycomb_api_key
     })
 
     destination = "/tmp/refinery.toml"
