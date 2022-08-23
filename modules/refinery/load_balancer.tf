@@ -56,7 +56,7 @@ module "elb" {
 
   name = "refinery-elb"
 
-  subnets         = module.vpc.public_subnets
+  subnets         = [data.aws_subnet.refinery-subnet.id]
   security_groups = [aws_security_group.refinery_lb_sg.id]
   internal        = false
 
@@ -72,13 +72,12 @@ module "elb" {
       instance_port     = "9090"
       instance_protocol = "TCP"
       lb_port           = "4317"
-      lb_protocol       = "SSL"
-      ssl_certificate_id = module.acm.acm_certificate_arn
+      lb_protocol       = "TCP"
     },
   ]
 
   health_check = {
-    target              = "HTTP:8080/x/alive"
+    target              = "HTTP:8080/alive"
     interval            = 30
     healthy_threshold   = 2
     unhealthy_threshold = 2

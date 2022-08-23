@@ -1,6 +1,8 @@
 # Terraform Module For Honeycomb Refinery
 
-A simple module for building a multi-node Refinery cluster using AWS EC2
+A simple module for building a multi-node Refinery cluster using AWS EC2.
+
+You will need to define the VPC and Subnet that you wish to use for building your cluster
 
 ## !!!!THIS IS A DEMO/EXAMPLE PRODUCT
 
@@ -8,11 +10,10 @@ Please understand that this is just an example of how one can use Terraform to s
 
 ## What it does
 
-1. Creates a new VPC with the name provided to the `vpc_name` variable
-2. Creates new security groups for the refinery instances, the redis instance, and the load balancer for the refinery instances
-3. Creates a Redis server using Amazon Linux 2 EC2 Instances, with the default Redis 6 install provided by the `amazon-linux-extras` command
-4. Creates a number of refinery servers - the number determined by the number of names provided to the `refinery_servers` variable. These are also Amazon Linux 2 EC2 Instances
-5. Creates an ELB to direct traffic to your Refinery instances
+1. Creates new security groups for the refinery instances, the redis instance, and the load balancer for the refinery instances
+2. Creates a Redis server using Amazon Linux 2 EC2 Instances, with the default Redis 6 install provided by the `amazon-linux-extras` command
+3. Creates a number of refinery servers - the number determined by the number of names provided to the `refinery_servers` variable. These are also Amazon Linux 2 EC2 Instances
+4. Creates an ELB to direct traffic to your Refinery instances
     - This will create an ACM cert using a Route53 hosted zone in your environment. This cert will be for `refinery.lb.${route53_zone}`
     - It will also create a Route53 entry for `refinery.lb.${route53_zone}
     - The ELB will listen for HTTPS traffic at port `443` and GRPC traffic at port `4317`. These are both TLS encrypted endpoints, using the cert created.

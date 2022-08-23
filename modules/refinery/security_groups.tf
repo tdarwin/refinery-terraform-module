@@ -6,7 +6,7 @@
 resource "aws_security_group" "refinery_lb_sg" {
   name        = var.lb_security_group_name
   description = "expose ingress rules for refinery elb"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = data.aws_vpc.refinery.id
   tags = {
     Name      = var.lb_security_group_name
     X-Contact = var.contact_tag_value
@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "refinery_lb_egress_rule" {
 resource "aws_security_group" "refinery_sg" {
   name        = var.refinery_security_group_name
   description = "expose SSH and Refinery Ports"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = data.aws_vpc.refinery.id
   tags = {
     Name      = var.refinery_security_group_name
     X-Contact = var.contact_tag_value
@@ -110,7 +110,7 @@ resource "aws_security_group_rule" "refinery_egress_rule" {
 resource "aws_security_group" "redis_sg" {
   name        = var.redis_security_group_name
   description = "expose SSH and Refinery Ports"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = data.aws_vpc.refinery.id
   tags = {
     Name      = var.redis_security_group_name
     X-Contact = var.contact_tag_value

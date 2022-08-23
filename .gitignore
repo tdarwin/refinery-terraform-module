@@ -1,5 +1,9 @@
 # Local .terraform directories
 **/.terraform/*
+.terraform/
+
+# Terraform Lock File
+.terraform.lock.hcl
 
 # .tfstate files
 *.tfstate
@@ -30,3 +34,4 @@ override.tf.json
 
 # Ignore my vscode settings
 .vscode/
+.main.tf
