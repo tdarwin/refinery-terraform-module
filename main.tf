@@ -3,11 +3,12 @@ module "refinery" {
   source                        = "./modules/refinery/"
 
   # Let us know what account and region you want to build this in
-  aws_profile_name              = "my-profile"
+  aws_profile_name              = "profile-name"
   aws_region                    = "us-east-2"
 
-  # Create a VPC with the given name
+  # VPC and Subnet to use
   vpc_name                      = "refinery-vpc"
+  subnet_name                   = "refinery-vpc-public-us-east-2a"
 
   # Create Security Groups for each component
   refinery_security_group_name  = "refinery_sg"
@@ -16,7 +17,7 @@ module "refinery" {
 
   # What Route53 Hosted Zone do you want your ELB created in for
   #   directing traffic to your Refinery servers
-  route53_zone                  = "mydomain.com"
+  route53_zone                  = "example.com"
 
   # Where is traffic allowed to come from to reach these systems
   # Don't leave this as 0.0.0.0 unless you want anybody to use your refinery!
@@ -29,8 +30,8 @@ module "refinery" {
   redis_server                  = "redis"
 
   # EC2 Instance Sizes and Root Volume Size (in GB)
-  refinery_instance_type        = "t3.small"
-  redis_instance_type           = "t3.micro"
+  refinery_instance_type        = "t4g.small"
+  redis_instance_type           = "t4g.micro"
   system_root_volume_size       = 25
 
   # Redis access credentials
@@ -38,23 +39,23 @@ module "refinery" {
   redis_password                = "onceuponatimeinagalaxyfarfaraway"
 
   # AWS SSH Key Pair to Use for the EC2 Instances
-  aws_key                       = "my_aws_ssh_key"
-  aws_key_file_local            = "~/.ssh/my_aws_ssh_private_key"
+  aws_key                       = "my_aws_rsa_key"
+  aws_key_file_local            = ".ssh/my_aws_rsa_key"
 
   # Tags to use on created objects
-  contact_tag_value             = "someone@somewhere.io"
-  department_tag_value          = "awesomesawce-department"
+  contact_tag_value             = "executive@awesomesawce.io"
+  department_tag_value          = "executive-awesomesawce"
 
   # Honeycomb API Key for sending Refinery metrics and logs
-  honeycomb_api_key             = "<YOUR_HONEYCOMB_API_KEY>"
+  honeycomb_api_key             = "555555555555555555555555"
 
   # Where to get the Refinery installer RPM
-  refinery_rpm_url              = "https://github.com/honeycombio/refinery/releases/download/v1.14.1/refinery-1.14.1-1.x86_64.rpm"
-  refinery_rpm                  = "refinery-1.14.1-1.x86_64.rpm"
+  refinery_rpm_url              = "https://github.com/honeycombio/refinery/releases/download/v1.15.0/refinery-1.15.0-1.aarch64.rpm"
+  refinery_rpm                  = "refinery-1.15.0-1.aarch64.rpm"
 
   # The Refinery rules.toml template file and the necessary variable definitions
   refinery_rules_toml = templatefile("${path.root}/files/rules.toml", { 
-    env_name = "refinery-demo"
+    env_name = "microservices-refinery-demo"
   })
 }
 

@@ -34,3 +34,4 @@ override.tf.json
 
 # Ignore my vscode settings
 .vscode/
+.main.tf
